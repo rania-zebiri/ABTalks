@@ -1,11 +1,11 @@
 import React from 'react';
-import { Navbar } from '../components/Navbar';
-import { Hero } from '../components/Hero';
-import { Ritual } from '../components/Ritual';
-import { SampleDay } from '../components/SampleDay';
-import { Tracks } from '../components/Tracks';
-import { Outcomes } from '../components/Outcomes';
-import { Footer } from '../components/Footer';
+import { Navbar } from '../components/landing/Navbar';
+import { Hero } from '../components/landing/Hero';
+import { Ritual } from '../components/landing/Ritual';
+import { SampleDay } from '../components/landing/SampleDay';
+import { Tracks } from '../components/landing/Tracks';
+import { Outcomes } from '../components/landing/Outcomes';
+import { Footer } from '../components/landing/Footer';
 
 export const LandingPage: React.FC = () => {
   return (
