@@ -1,37 +1,69 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --canvas: #F7F7FA;
-    --card: #FFFFFF;
-    --elevated-card: #FFFFFF;
-    --border-color: #E4E7EE;
-    --primary-accent: #FF5A36;
-    --github-accent: #00B368;
-    --linkedin-accent: #0090A8;
-    --text-header: #0B0D12;
-    --text-body: #5B6472;
-    --text-disabled: #A2A9B5;
-  }
+:root[data-theme='dark'],
+.dark {
+  --color-canvas: #090a0f;
+  --color-card: #12151e;
+  --color-elevated: #161a26;
+  --color-border: #1e2330;
+  --color-primary: #ff5a36;
+  --color-github: #00ff85;
+  --color-linkedin: #00e5e5;
+  --color-header: #ffffff;
+  --color-body: #94a3b8;
+  --color-muted: #475569;
+}
 
-  .dark {
-    --canvas: #090A0F;
-    --card: #12151E;
-    --elevated-card: #161A26;
-    --border-color: #1E2330;
-    --primary-accent: #FF5A36;
-    --github-accent: #00FF85;
-    --linkedin-accent: #00E5E5;
-    --text-header: #FFFFFF;
-    --text-body: #94A3B8;
-    --text-disabled: #475569;
-  }
+:root[data-theme='light'],
+.light {
+  --color-canvas: #f7f7fa;
+  --color-card: #ffffff;
+  --color-elevated: #ffffff;
+  --color-border: #e4e7ee;
+  --color-primary: #ff5a36;
+  --color-github: #00b368;
+  --color-linkedin: #0090a8;
+  --color-header: #0b0d12;
+  --color-body: #5b6472;
+  --color-muted: #a2a9b5;
+}
+
+@theme {
+  --color-canvas: var(--color-canvas);
+  --color-card: var(--color-card);
+  --color-elevated: var(--color-elevated);
+  --color-borderline: var(--color-border);
+  --color-primary: var(--color-primary);
+  --color-github: var(--color-github);
+  --color-linkedin: var(--color-linkedin);
+  --color-header: var(--color-header);
+  --color-bodytext: var(--color-body);
+  --color-muted: var(--color-muted);
 }
 
 body {
-  background-color: var(--canvas);
-  color: var(--text-body);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--color-canvas);
+  color: var(--color-body);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pill-btn-primary {
+  @apply px-6 py-3 rounded-full bg-primary text-white font-medium hover:opacity-90 transition-opacity inline-flex items-center justify-center cursor-pointer;
+}
+
+.ghost-btn {
+  @apply px-6 py-3 text-bodytext font-medium hover:text-header hover:underline transition-all inline-flex items-center justify-center cursor-pointer;
+}
+
+.panel-card {
+  @apply bg-card rounded-2xl border border-borderline p-6 hover:shadow-lg transition-all duration-300;
+}
+
+.elevated-card {
+  @apply bg-elevated rounded-2xl shadow-xl border border-borderline;
+}
+
+.orb-blur {
+  filter: blur(80px);
 }
