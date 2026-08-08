@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Check, CheckCircle2, Wand2 } from 'lucide-react';
 
-export const SubmissionForm: React.FC = () => {
+interface SubmissionFormProps {
+  day?: number;
+}
+
+export const SubmissionForm: React.FC<SubmissionFormProps> = ({ day = 12 }) => {
   const [github, setGithub] = useState('');
   const [linkedin, setLinkedin] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitted'>('idle');
@@ -12,7 +16,7 @@ export const SubmissionForm: React.FC = () => {
   const canSubmit = isGithubValid && isLinkedinValid;
 
   const handleGenerateCaption = () => {
-    const caption = `Just completed Day 12 of my 60-day coding streak with @ABTalks! 🔥 Today I built a custom useLocalStorage React hook to seamlessly persist state across browser reloads. It was tricky handling the JSON parsing edge cases, but incredibly satisfying to see it work.\n\nCode is up on my GitHub: ${github || '[link]'}\n\n#100DaysOfCode #ReactJS #WebDevelopment`;
+    const caption = `Just completed Day ${day} of my 60-day coding streak with @ABTalks! 🔥 Today I built a custom challenge solution to solidify my dev skills. It was tricky handling edge cases, but incredibly satisfying to see it work.\n\nCode is up on my GitHub: ${github || '[link]'}\n\n#100DaysOfCode #ReactJS #WebDevelopment`;
     
     navigator.clipboard.writeText(caption).then(() => {
       setShowToast(true);
@@ -26,13 +30,13 @@ export const SubmissionForm: React.FC = () => {
 
   if (status === 'submitted') {
     return (
-      <div className="bg-card rounded-2xl border border-green-500/20 bg-green-500/5 p-6">
+      <div className="bg-green-500/5 border border-green-500/20 rounded-2xl p-6">
         <div className="flex flex-col items-center text-center py-6">
           <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 mb-4">
             <Check className="w-8 h-8" />
           </div>
-          <h3 className="text-2xl font-bold text-header mb-2">Day 12 Complete!</h3>
-          <p className="text-bodytext mb-6">Your streak is now at 12 days. See you tomorrow.</p>
+          <h3 className="text-2xl font-bold text-header mb-2">Day {day} Complete!</h3>
+          <p className="text-bodytext mb-6">Your streak is now updated. See you tomorrow!</p>
           
           <div className="flex flex-wrap gap-3 justify-center mb-6">
             <a href={github} target="_blank" rel="noreferrer" className="px-4 py-2 rounded-full bg-card border border-borderline text-sm font-medium text-header hover:bg-elevated flex items-center gap-2">
@@ -52,7 +56,7 @@ export const SubmissionForm: React.FC = () => {
   }
 
   return (
-    <div className="bg-card rounded-2xl border border-primary/20 bg-gradient-to-b from-card to-canvas p-6">
+    <div className="bg-card rounded-2xl border border-primary/20 bg-linear-to-b from-card to-canvas p-6">
       <h3 className="text-xl font-bold text-header mb-1">Submit your work</h3>
       <p className="text-sm text-bodytext mb-6">Post your code to GitHub and share your learnings on LinkedIn.</p>
 
@@ -124,7 +128,7 @@ export const SubmissionForm: React.FC = () => {
                 : 'bg-card border border-borderline text-muted cursor-not-allowed'
             }`}
           >
-            Submit Day 12
+            Submit Day {day}
           </button>
         </div>
       </div>

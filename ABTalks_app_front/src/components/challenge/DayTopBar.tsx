@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Flame, Sun, Moon } from 'lucide-react';
 
-export const DayTopBar: React.FC = () => {
+interface DayTopBarProps {
+  currentDay?: number;
+}
+
+export const DayTopBar: React.FC<DayTopBarProps> = ({ currentDay = 12 }) => {
   const navigate = useNavigate();
 
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -30,6 +34,9 @@ export const DayTopBar: React.FC = () => {
 
   const activeTextColor = theme === 'dark' ? 'text-white' : 'text-black';
 
+  const canGoPrev = currentDay > 1;
+  const canGoNext = currentDay < 60;
+
   return (
     <header className="fixed top-0 left-0 w-full z-50 px-4 py-3">
       <div className="max-w-7xl mx-auto bg-card/90 backdrop-blur-md border border-borderline rounded-full px-5 py-2 grid grid-cols-3 items-center shadow-sm">
@@ -46,23 +53,34 @@ export const DayTopBar: React.FC = () => {
 
           <div className="flex items-center gap-2 bg-canvas border border-borderline px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-header shrink-0">
             <Flame className="w-4 h-4 text-primary fill-primary" />
-            <span>Day 12 of 60</span>
+            <span>Day {currentDay} of 60</span>
           </div>
         </div>
 
-        {/* Center Section: Perfectly Centered Prev/Next Controls */}
+        {/* Center Section: Dynamic Prev/Next Controls */}
         <div className="flex justify-center">
           <nav className="flex items-center gap-1.5 bg-canvas rounded-full p-1 border border-borderline">
             <button 
-              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold ${activeTextColor} hover:opacity-70 flex items-center gap-1.5 transition-opacity cursor-pointer`}
+              onClick={() => canGoPrev && navigate(`/day/${currentDay - 1}`)}
+              disabled={!canGoPrev}
+              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-opacity ${
+                canGoPrev 
+                  ? `${activeTextColor} hover:opacity-70 cursor-pointer` 
+                  : 'text-muted opacity-40 cursor-not-allowed'
+              }`}
             >
-              <ArrowLeft className={`w-3.5 h-3.5 ${activeTextColor}`} />
+              <ArrowLeft className="w-3.5 h-3.5" />
               <span>Prev</span>
             </button>
 
             <button 
-              disabled 
-              className="px-3.5 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium text-muted opacity-40 cursor-not-allowed flex items-center gap-1.5"
+              onClick={() => canGoNext && navigate(`/day/${currentDay + 1}`)}
+              disabled={!canGoNext}
+              className={`px-3.5 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-opacity ${
+                canGoNext 
+                  ? `${activeTextColor} hover:opacity-70 cursor-pointer` 
+                  : 'text-muted opacity-40 cursor-not-allowed'
+              }`}
             >
               <span>Next</span>
               <ArrowRight className="w-3.5 h-3.5" />

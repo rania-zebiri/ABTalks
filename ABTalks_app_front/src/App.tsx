@@ -15,23 +15,24 @@ import { LeaderboardPage } from './pages/LeaderboardApp';
 const MainContent: React.FC = () => {
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
+  const isChallengePage = location.pathname.startsWith('/day');
 
   return (
     <div className="min-h-screen bg-canvas text-header flex flex-col">
-      {/* TopBar hidden on Landing Page */}
-      {!isLandingPage && <TopBar />}
+      {/* TopBar hidden on both Landing Page and Challenge Pages */}
+      {!isLandingPage && !isChallengePage && <TopBar />}
 
-      <main className={`flex-1 ${!isLandingPage ? 'pt-1 pb-24 md:pb-8' : ''}`}>
+      <main className={`flex-1 ${!isLandingPage ? (isChallengePage ? 'pt-26 pb-24 md:pb-8' : 'pt-1 pb-24 md:pb-8') : ''}`}>
         <Routes>
-          {/* Default entry point: Landing Page */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/tracks" element={<TracksPage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/day/12" element={<ChallengePage />} />
+          
+          {/* Dynamic Day Route */}
+          <Route path="/day/:dayNumber" element={<ChallengePage />} />
 
-          {/* Any undefined route fallback -> Landing Page */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

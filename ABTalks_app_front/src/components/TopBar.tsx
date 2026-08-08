@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, Sun, Moon, LayoutDashboard, Compass, Trophy, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useDemoState } from '../context/DemoContext'; // Import Demo Context
 import logoImage from '../assets/logo.png';
 
 export const TopBar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { userData } = useDemoState(); // Access current demo user data
 
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
@@ -13,10 +15,14 @@ export const TopBar: React.FC = () => {
     return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
   });
 
-  const progress = 78;
+  // Calculate dynamic circular progress based on overall challenge completion
+  const totalDays = 60;
+  const completedDays = userData.progressDays || 0;
+  const progressPercentage = Math.round((completedDays / totalDays) * 100);
+
   const radius = 18;
   const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (progress / 100) * circumference;
+  const strokeDashoffset = circumference - (progressPercentage / 100) * circumference;
 
   useEffect(() => {
     const root = document.documentElement;
@@ -94,6 +100,7 @@ export const TopBar: React.FC = () => {
               <div className="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border border-card" />
             </button>
 
+            {/* Dynamic Profile Avatar & Progress Circle */}
             <div 
               onClick={() => navigate('/profile')}
               className={`relative w-10 h-10 sm:w-11 sm:h-11 cursor-pointer group rounded-full transition-transform hover:scale-105 ${
@@ -106,19 +113,25 @@ export const TopBar: React.FC = () => {
                   cx="20"
                   cy="20"
                   r={radius}
-                  className="fill-none stroke-primary transition-all duration-1000"
+                  className="fill-none stroke-primary transition-all duration-700"
                   strokeWidth="2.5"
                   strokeDasharray={circumference}
                   strokeDashoffset={strokeDashoffset}
                   strokeLinecap="round"
                 />
               </svg>
-              <div className="absolute top-1 left-1 w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden bg-canvas border border-card">
-                <img
-                  src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
-                  alt="Avatar"
-                  className="w-full h-full object-cover"
-                />
+              <div className="absolute top-1 left-1 w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden bg-canvas border border-card flex items-center justify-center">
+                {userData.avatar ? (
+                  <img
+                    src={userData.avatar}
+                    alt={userData.name || 'User Avatar'}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-xs font-bold text-header">
+                    {userData.initials || 'JD'}
+                  </span>
+                )}
               </div>
             </div>
           </div>
