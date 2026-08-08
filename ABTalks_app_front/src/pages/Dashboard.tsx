@@ -1,5 +1,5 @@
 import React from 'react';
-import { TopBar } from '../components/dashboard/TopBar';
+import { TopBar } from '../components/TopBar';
 import { ProfileStatCard } from '../components/dashboard/ProfileStatCard';
 import { ProgressOverview } from '../components/dashboard/ProgressOverview';
 import { MotivationPanel } from '../components/dashboard/MotivationPanel';

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, Sun, Moon } from 'lucide-react';
-import logoImage from '../../assets/logo.png';
+import { useNavigate, useLocation } from 'react-router-dom';
+import logoImage from '../assets/logo.png';
 
 export const TopBar: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    // Read theme preference from localStorage or HTML root attribute
     const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' | null;
     if (savedTheme) return savedTheme;
     return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
@@ -32,20 +35,47 @@ export const TopBar: React.FC = () => {
     setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
   };
 
+  const navItems = [
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Tracks', path: '/tracks' },
+    { label: 'Leaderboard', path: '/leaderboard' },
+  ];
+
   return (
     <nav className="fixed top-0 w-full z-50 px-4 py-4">
-      <div className="max-w-7xl mx-auto bg-card/80 backdrop-blur-md border border-borderline rounded-full px-4 py-2 flex items-center justify-between">
-        <div className="flex items-center gap-2 cursor-pointer">
+      <div className="max-w-7xl mx-auto bg-card/80 backdrop-blur-md border border-borderline rounded-full px-5 py-2.5 flex items-center justify-between shadow-sm">
+        
+        {/* Brand Logo & Name */}
+        <div 
+          onClick={() => navigate('/dashboard')}
+          className="flex items-center gap-2.5 cursor-pointer"
+        >
           <img src={logoImage} alt="ABTalks" className="w-6 h-6 object-contain" />
           <span className="font-bold text-lg text-header tracking-tight hidden sm:block">ABTalks</span>
         </div>
 
+        {/* Center Pill Navigation */}
         <div className="hidden md:flex items-center gap-1 bg-canvas rounded-full p-1 border border-borderline">
-          <a href="#" className="px-5 py-1.5 rounded-full bg-card text-header text-sm font-medium">Dashboard</a>
-          <a href="#" className="px-5 py-1.5 rounded-full text-bodytext hover:text-header text-sm font-medium transition-colors">Tracks</a>
-          <a href="#" className="px-5 py-1.5 rounded-full text-bodytext hover:text-header text-sm font-medium transition-colors">Leaderboard</a>
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path || (item.path === '/leaderboard' && location.pathname === '/');
+            
+            return (
+              <button
+                key={item.label}
+                onClick={() => navigate(item.path)}
+                className={`px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-bodytext hover:text-header'
+                }`}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
 
+        {/* Action Controls */}
         <div className="flex items-center gap-3 sm:gap-4">
           {/* Theme Toggle Button */}
           <button
@@ -63,20 +93,34 @@ export const TopBar: React.FC = () => {
           {/* Notifications Button */}
           <button className="relative w-10 h-10 rounded-full bg-canvas border border-borderline flex items-center justify-center text-bodytext hover:text-header transition-colors">
             <Bell className="w-4 h-4" />
-            <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border border-card" />
+            <div className="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border border-card" />
           </button>
 
-          {/* User Profile Progress Ring */}
-          <div className="relative w-12 h-12 cursor-pointer group">
+          {/* User Profile Radial Progress */}
+          <div className="relative w-11 h-11 cursor-pointer group">
             <svg className="w-full h-full -rotate-90 absolute top-0 left-0" viewBox="0 0 40 40">
-              <circle cx="20" cy="20" r={radius} className="fill-none stroke-borderline" strokeWidth="2" />
-              <circle cx="20" cy="20" r={radius} className="fill-none stroke-primary transition-all duration-1000" strokeWidth="2" strokeDasharray={circumference} strokeDashoffset={strokeDashoffset} strokeLinecap="round" />
+              <circle cx="20" cy="20" r={radius} className="fill-none stroke-borderline" strokeWidth="2.5" />
+              <circle
+                cx="20"
+                cy="20"
+                r={radius}
+                className="fill-none stroke-primary transition-all duration-1000"
+                strokeWidth="2.5"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+              />
             </svg>
-            <div className="absolute top-1 left-1 w-10 h-10 rounded-full overflow-hidden bg-canvas border-2 border-card">
-              <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Avatar" className="w-full h-full object-cover" />
+            <div className="absolute top-1 left-1 w-9 h-9 rounded-full overflow-hidden bg-canvas border border-card">
+              <img
+                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80"
+                alt="Avatar"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>
+
       </div>
     </nav>
   );

@@ -1,12 +1,20 @@
-import { ThemeProvider } from './context/ThemeContext';
-//import { LandingPage } from './pages/Landing_page';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { TopBar } from './components/TopBar';
+import { LeaderboardApp } from './pages/LeaderboardApp';
 import { Dashboard } from './pages/Dashboard';
-function App() {
+
+export default function App() {
   return (
-    <ThemeProvider>
-      <Dashboard />
-    </ThemeProvider>
+    <BrowserRouter>
+      <div className="min-h-screen bg-canvas text-header">
+        <TopBar />
+        <Routes>
+          <Route path="/" element={<Navigate to="/leaderboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/leaderboard" element={<LeaderboardApp />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
-
-export default App;
