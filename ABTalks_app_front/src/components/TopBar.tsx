@@ -39,6 +39,7 @@ export const TopBar: React.FC = () => {
     { label: 'Dashboard', path: '/dashboard' },
     { label: 'Tracks', path: '/tracks' },
     { label: 'Leaderboard', path: '/leaderboard' },
+    { label: 'Profile', path: '/profile' },
   ];
 
   return (
@@ -63,7 +64,7 @@ export const TopBar: React.FC = () => {
               <button
                 key={item.label}
                 onClick={() => navigate(item.path)}
-                className={`px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
                   isActive
                     ? 'bg-primary text-white shadow-sm font-semibold'
                     : 'text-bodytext hover:text-header'
@@ -81,7 +82,7 @@ export const TopBar: React.FC = () => {
           <button
             onClick={toggleTheme}
             aria-label="Toggle Theme"
-            className="w-10 h-10 rounded-full bg-canvas border border-borderline flex items-center justify-center text-bodytext hover:text-header transition-colors"
+            className="w-10 h-10 rounded-full bg-canvas border border-borderline flex items-center justify-center text-bodytext hover:text-header transition-colors cursor-pointer"
           >
             {theme === 'dark' ? (
               <Sun className="w-4 h-4 text-yellow-400" />
@@ -91,13 +92,18 @@ export const TopBar: React.FC = () => {
           </button>
 
           {/* Notifications Button */}
-          <button className="relative w-10 h-10 rounded-full bg-canvas border border-borderline flex items-center justify-center text-bodytext hover:text-header transition-colors">
+          <button className="relative w-10 h-10 rounded-full bg-canvas border border-borderline flex items-center justify-center text-bodytext hover:text-header transition-colors cursor-pointer">
             <Bell className="w-4 h-4" />
             <div className="absolute top-2.5 right-2.5 w-2 h-2 bg-primary rounded-full border border-card" />
           </button>
 
           {/* User Profile Radial Progress */}
-          <div className="relative w-11 h-11 cursor-pointer group">
+          <div 
+            onClick={() => navigate('/profile')}
+            className={`relative w-11 h-11 cursor-pointer group rounded-full transition-transform hover:scale-105 ${
+              location.pathname === '/profile' ? 'ring-2 ring-primary ring-offset-2 ring-offset-canvas' : ''
+            }`}
+          >
             <svg className="w-full h-full -rotate-90 absolute top-0 left-0" viewBox="0 0 40 40">
               <circle cx="20" cy="20" r={radius} className="fill-none stroke-borderline" strokeWidth="2.5" />
               <circle
@@ -125,3 +131,5 @@ export const TopBar: React.FC = () => {
     </nav>
   );
 };
+
+export default TopBar;

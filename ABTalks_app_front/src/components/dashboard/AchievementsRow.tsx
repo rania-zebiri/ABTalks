@@ -1,5 +1,6 @@
 import React from 'react';
 import { Flame, Shield, Trophy } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const AchievementsRow: React.FC = () => {
   const badges = [
@@ -34,7 +35,14 @@ export const AchievementsRow: React.FC = () => {
     <div className="panel-card overflow-hidden">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-bold text-header">Badges & Achievements</h3>
-        <span className="text-sm text-primary font-medium hover:underline cursor-pointer">View all</span>
+        
+        {/* Linked directly to the BadgeCase section on the Profile page */}
+        <Link 
+          to="/profile#badge-case" 
+          className="text-sm text-primary font-medium hover:underline cursor-pointer"
+        >
+          View all
+        </Link>
       </div>
 
       <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none -mx-2 px-2">
@@ -52,3 +60,5 @@ export const AchievementsRow: React.FC = () => {
     </div>
   );
 };
+
+export default AchievementsRow;
