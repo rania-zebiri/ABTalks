@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight, Code2, Zap, AlertTriangle } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Code2, Zap } from 'lucide-react';
 import { useDemoState } from '../../context/DemoContext';
 export const TodayChallengeHero: React.FC = () => {
   const navigate = useNavigate();
@@ -12,8 +12,8 @@ export const TodayChallengeHero: React.FC = () => {
   return (
     <div className={`rounded-3xl p-6 md:p-8 text-white relative overflow-hidden shadow-lg transition-all duration-300 ${
       userData.missedDayAlert 
-        ? 'bg-gradient-to-r from-red-600 via-orange-600 to-amber-600' 
-        : 'bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500'
+        ? 'bg-linear-to-r from-red-600 via-orange-600 to-amber-600' 
+        : 'bg-linear-to-r from-orange-600 via-orange-500 to-amber-500'
     }`}>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
         

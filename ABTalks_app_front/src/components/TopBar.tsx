@@ -58,7 +58,7 @@ export const TopBar: React.FC = () => {
             onClick={() => navigate('/dashboard')}
             className="flex items-center gap-2.5 cursor-pointer shrink-0"
           >
-            <img src={logoImage} alt="ABTalks" className="w-6 h-6 object-contain" />
+            <img src={logoImage} alt="ABTalks" className="w-12 h-12 object-contain" />
             <span className="font-bold text-base sm:text-lg text-header tracking-tight">ABTalks</span>
           </div>
 
