@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import { Flame, Trophy, CalendarCheck, LayoutGrid, Pencil } from 'lucide-react';
+import { useDemoState } from '../../context/DemoContext';
 
-interface ProfileHeaderProps {
-  avatarUrl?: string;
-  name?: string;
-}
-
-export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
-  avatarUrl = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80",
-  name = "Aditya B.",
-}) => {
+export const ProfileHeader: React.FC = () => {
+  const { userData } = useDemoState();
   const [imageError, setImageError] = useState(false);
-  const completedDays = 12;
-  const totalDays = 60;
+
+  const completedDays = userData.progressDays;
+  const totalDays = userData.maxDays || 60;
   const progressPercentage = (completedDays / totalDays) * 100;
 
   const radius = 60;
@@ -49,16 +44,16 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
         {/* Profile Inner Circle */}
         <div className="absolute w-28 h-28 rounded-full overflow-hidden flex items-center justify-center z-10 shadow-inner">
-          {avatarUrl && !imageError ? (
+          {userData.avatar && !imageError ? (
             <img 
-              src={avatarUrl} 
-              alt={name} 
+              src={userData.avatar} 
+              alt={userData.name} 
               onError={() => setImageError(true)}
               className="w-full h-full object-cover" 
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-[#FF7E40] to-[#FF4500] flex items-center justify-center text-white text-5xl font-extrabold select-none">
-              {name.charAt(0)}
+            <div className="w-full h-full bg-linear-to-br from-[#FF7E40] to-[#FF4500] flex items-center justify-center text-white text-5xl font-extrabold select-none">
+              {userData.initials || userData.name.charAt(0)}
             </div>
           )}
         </div>
@@ -73,7 +68,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       <div className="grow text-center md:text-left z-10 w-full pt-2">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
           <div>
-            <h1 className="text-3xl font-extrabold text-header mb-1">{name}</h1>
+            <h1 className="text-3xl font-extrabold text-header mb-1">{userData.name}</h1>
             <div className="text-sm text-muted font-medium mb-3">University of Texas at Austin</div>
           </div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-500/10 text-orange-500 rounded-md text-xs font-bold border border-orange-500/20 w-fit mx-auto md:mx-0">
@@ -89,32 +84,35 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
         {/* Streak & Activity Stats */}
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-8 gap-y-4 pt-4 border-t border-borderline">
+          {/* Current Streak */}
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center">
               <Flame className="w-4 h-4 fill-orange-500" />
             </div>
             <div>
-              <div className="text-sm font-bold text-header">{completedDays}</div>
+              <div className="text-sm font-bold text-header">{userData.streakDays}</div>
               <div className="text-[10px] text-muted uppercase tracking-wider font-semibold">Current Streak</div>
             </div>
           </div>
 
+          {/* Longest Streak (fallback to streakDays) */}
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-purple-500/10 text-purple-500 flex items-center justify-center">
               <Trophy className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-sm font-bold text-header">15</div>
+              <div className="text-sm font-bold text-header">{userData.streakDays}</div>
               <div className="text-[10px] text-muted uppercase tracking-wider font-semibold">Longest Streak</div>
             </div>
           </div>
 
+          {/* Total Days Completed */}
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center">
               <CalendarCheck className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-sm font-bold text-header">42</div>
+              <div className="text-sm font-bold text-header">{userData.progressDays}</div>
               <div className="text-[10px] text-muted uppercase tracking-wider font-semibold">Total Days</div>
             </div>
           </div>

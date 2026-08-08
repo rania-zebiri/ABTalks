@@ -1,49 +1,50 @@
 import React from 'react';
+import { useDemoState } from '../../context/DemoContext';
 
 export const ProgressOverview: React.FC = () => {
-  const totalDays = 60;
-  const currentDay = 12;
-  const percentage = Math.round((currentDay / totalDays) * 100);
+  const { userData } = useDemoState();
+  const percentage = Math.round((userData.progressDays / userData.maxDays) * 100);
 
   return (
-    <div className="panel-card">
-      <div className="flex justify-between items-end mb-4">
+    <div className="panel-card p-6 flex flex-col gap-4">
+      <div className="flex justify-between items-center">
         <div>
-          <h3 className="font-bold text-header mb-1">Challenge Progress</h3>
-          <div className="text-sm text-bodytext">Day {currentDay} of {totalDays}</div>
+          <h3 className="font-bold text-header text-sm">Challenge Progress</h3>
+          <p className="text-xs text-muted">
+            Day {userData.progressDays} of {userData.maxDays}
+          </p>
         </div>
-        <div className="text-2xl font-bold text-primary">{percentage}%</div>
+        <span className="text-xl font-extrabold text-primary">{percentage}%</span>
       </div>
 
-      <div className="w-full h-3 bg-canvas rounded-full overflow-hidden border border-borderline mb-6">
-        <div className="h-full bg-primary rounded-full relative" style={{ width: `${percentage}%` }}>
-          <div className="absolute right-0 top-0 bottom-0 w-4 bg-white/30 blur-[2px]" />
-        </div>
+      {/* Progress Bar */}
+      <div className="w-full bg-canvas border border-borderline rounded-full h-3 overflow-hidden">
+        <div
+          className="bg-primary h-full transition-all duration-500 rounded-full"
+          style={{ width: `${percentage}%` }}
+        />
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <div className="flex-1 bg-canvas border border-borderline rounded-lg p-2.5 flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-github" />
-          <div className="flex flex-col">
-            <span className="text-[10px] text-muted uppercase font-semibold">Completed</span>
-            <span className="text-sm font-bold text-header">{currentDay}</span>
-          </div>
+      <div className="grid grid-cols-3 gap-2 mt-2">
+        <div className="bg-canvas border border-borderline rounded-xl p-2.5 text-center">
+          <div className="text-xs font-bold text-header">{userData.progressDays}</div>
+          <div className="text-[9px] text-muted font-semibold uppercase">Completed</div>
         </div>
-        <div className="flex-1 bg-canvas border border-borderline rounded-lg p-2.5 flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-red-500" />
-          <div className="flex flex-col">
-            <span className="text-[10px] text-muted uppercase font-semibold">Missed</span>
-            <span className="text-sm font-bold text-header">2</span>
+        <div className="bg-canvas border border-borderline rounded-xl p-2.5 text-center">
+          <div className="text-xs font-bold text-red-400">
+            {userData.missedDayAlert ? 1 : 0}
           </div>
+          <div className="text-[9px] text-muted font-semibold uppercase">Missed</div>
         </div>
-        <div className="flex-1 bg-canvas border border-borderline rounded-lg p-2.5 flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-borderline" />
-          <div className="flex flex-col">
-            <span className="text-[10px] text-muted uppercase font-semibold">Remaining</span>
-            <span className="text-sm font-bold text-header">{totalDays - currentDay}</span>
+        <div className="bg-canvas border border-borderline rounded-xl p-2.5 text-center">
+          <div className="text-xs font-bold text-header">
+            {userData.maxDays - userData.progressDays}
           </div>
+          <div className="text-[9px] text-muted font-semibold uppercase">Remaining</div>
         </div>
       </div>
     </div>
   );
 };
+
+export default ProgressOverview;

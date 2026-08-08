@@ -2,7 +2,7 @@ import React from 'react';
 import { Globe } from 'lucide-react';
 
 // Import your custom logo image (adjust the path to match your project)
-import logoImage from '../assets/logo.png';
+import logoImage from "../../assets/logo.png";
 
 export const Footer: React.FC = () => {
   const currentYear = 2026;

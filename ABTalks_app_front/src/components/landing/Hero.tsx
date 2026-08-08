@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, User } from 'lucide-react';
-import coderImage from '../assets/coder_man.png';
+import coderImage from '../../assets/coder_man.png';
 
 export const Hero: React.FC = () => {
+  const navigate = useNavigate();
+
   const scrollToSample = () => {
     const el = document.getElementById('sample-day');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -30,11 +33,15 @@ export const Hero: React.FC = () => {
             </p>
 
             <div className="flex flex-wrap items-center gap-4 mb-8">
-              <a href="#dashboard" className="pill-btn-primary group">
-                Start Your Streak
+              {/* Updated Start Button to use React Router Navigation */}
+              <button 
+                onClick={() => navigate('/dashboard')} 
+                className="pill-btn-primary group cursor-pointer"
+              >
+                <span>Start Your Streak</span>
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </a>
-              <button onClick={scrollToSample} className="ghost-btn">
+              </button>
+              <button onClick={scrollToSample} className="ghost-btn cursor-pointer">
                 See a sample day <ArrowRight className="w-4 h-4 ml-1 text-sm" />
               </button>
             </div>

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { ChevronDown } from 'lucide-react';
-
+import { useDemoState } from '../../context/DemoContext';
 Chart.register(...registerables);
 
 export const WeeklyActivityChart: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const chartRef = useRef<Chart | null>(null);
+  const { userData } = useDemoState();
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -14,6 +15,14 @@ export const WeeklyActivityChart: React.FC = () => {
 
     const ctx = canvasRef.current.getContext('2d');
     if (!ctx) return;
+
+    // Determine mock datasets based on active state
+    let chartData = [80, 65, 90, 100, 40, 0, 0];
+    if (userData.progressDays === 0) {
+      chartData = [0, 0, 0, 0, 0, 0, 0]; // Empty graph for new/empty student
+    } else if (userData.missedDayAlert) {
+      chartData = [70, 80, 0, 0, 0, 0, 0]; // Missed days gap
+    }
 
     const computedStyle = getComputedStyle(document.documentElement);
     const primaryColor = computedStyle.getPropertyValue('--color-primary').trim() || '#ff5a36';
@@ -29,11 +38,11 @@ export const WeeklyActivityChart: React.FC = () => {
       data: {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
-          data: [80, 65, 90, 100, 40, 0, 0],
+          data: chartData,
           backgroundColor: (context) => {
             const index = context.dataIndex;
+            if (chartData[index] === 0) return 'rgba(128, 128, 128, 0.1)';
             if (index === 4) return gradientPrimary;
-            if (index > 4) return 'rgba(128, 128, 128, 0.1)';
             return borderColor;
           },
           borderRadius: 6,
@@ -63,7 +72,7 @@ export const WeeklyActivityChart: React.FC = () => {
     return () => {
       if (chartRef.current) chartRef.current.destroy();
     };
-  }, []);
+  }, [userData]); // Re-render chart whenever demo state changes
 
   return (
     <div className="panel-card flex flex-col h-70">
@@ -79,3 +88,5 @@ export const WeeklyActivityChart: React.FC = () => {
     </div>
   );
 };
+
+export default WeeklyActivityChart;

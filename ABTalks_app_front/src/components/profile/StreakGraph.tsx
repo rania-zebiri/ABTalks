@@ -1,15 +1,22 @@
 import React from 'react';
 import { CalendarDays } from 'lucide-react';
+import { useDemoState } from '../../context/DemoContext';
 
 export const StreakGraph: React.FC = () => {
-  const totalDays = 60;
-  const currentDay = 12;
+  const { userData } = useDemoState();
+  const totalDays = userData.maxDays || 60;
+  const currentDay = userData.progressDays;
 
   const days = Array.from({ length: totalDays }, (_, i) => {
     const dayNum = i + 1;
-    if (dayNum > currentDay) return { day: dayNum, status: null };
-    if (dayNum === 3 || dayNum === 5) return { day: dayNum, status: 0 };
-    return { day: dayNum, status: 1 };
+    if (dayNum > currentDay) return { day: dayNum, status: null }; // Locked
+    
+    // Flag missed days if alert is active
+    if (userData.missedDayAlert && (dayNum === currentDay || dayNum === currentDay - 1)) {
+      return { day: dayNum, status: 0 }; // Missed
+    }
+
+    return { day: dayNum, status: 1 }; // Completed
   });
 
   const columns = 15;
@@ -23,7 +30,7 @@ export const StreakGraph: React.FC = () => {
           Streak History
         </h3>
         <div className="text-sm font-bold text-muted">
-          <span className="text-header">{currentDay}</span> / 60 Days
+          <span className="text-header">{currentDay}</span> / {totalDays} Days
         </div>
       </div>
 
@@ -76,3 +83,5 @@ export const StreakGraph: React.FC = () => {
     </div>
   );
 };
+
+export default StreakGraph;

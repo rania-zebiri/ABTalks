@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 
-import logoImage from '../assets/logo.png';
+import logoImage from '../../assets/logo.png';
 
 export const Navbar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();

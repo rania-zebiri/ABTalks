@@ -10,6 +10,7 @@ import {
   Users, 
   ArrowRight 
 } from 'lucide-react';
+import { useDemoState } from '../context/DemoContext';
 
 interface Track {
   id: string;
@@ -125,10 +126,12 @@ function TrackCard({ track }: { track: Track }) {
 
 export function TracksPage() {
   const navigate = useNavigate();
+  const { userData } = useDemoState();
   const activeTrack = TRACKS_DATA.find((t) => t.active);
+  const currentDay = userData.progressDays === 0 ? 1 : userData.progressDays;
 
   return (
-    <div className="min-h-screen bg-canvas pt-28 pb-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-canvas pt-2 pb-16 px-4 sm:px-6 lg:px-8">
       <main className="max-w-7xl mx-auto">
         {/* Active Track Banner */}
         {activeTrack && (
@@ -141,7 +144,9 @@ export function TracksPage() {
                 <span className="text-bodytext">You're currently on </span>
                 <strong className="text-header font-semibold">{activeTrack.title}</strong>
                 <span className="text-muted mx-2">•</span>
-                <span className="text-[#FF5A36] font-bold">Day 12 of 60</span>
+                <span className="text-[#FF5A36] font-bold">
+                  Day {currentDay} of {userData.maxDays}
+                </span>
               </div>
             </div>
             <button 

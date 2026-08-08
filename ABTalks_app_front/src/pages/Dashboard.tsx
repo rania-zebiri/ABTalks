@@ -1,8 +1,7 @@
 import React from 'react';
-import { TopBar } from '../components/TopBar';
 import { ProfileStatCard } from '../components/dashboard/ProfileStatCard';
 import { ProgressOverview } from '../components/dashboard/ProgressOverview';
-import { MotivationPanel } from '../components/dashboard/MotivationPanel';
+import { AICoachCard } from '../components/dashboard/AICoachCard'; 
 import { TodayChallengeHero } from '../components/dashboard/TodayChallengeHero';
 import { WeeklyActivityChart } from '../components/dashboard/WeeklyActivityChart';
 import { AchievementsRow } from '../components/dashboard/AchievementsRow';
@@ -10,14 +9,13 @@ import { AchievementsRow } from '../components/dashboard/AchievementsRow';
 export const Dashboard: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-canvas text-bodytext pb-12 transition-colors duration-300">
-      <TopBar />
-      
-      <main className="grow pt-24 px-4 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <main className="grow pt-2 px-4 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column */}
         <div className="lg:col-span-4 flex flex-col gap-6">
           <ProfileStatCard />
           <ProgressOverview />
-          <MotivationPanel />
+          {/* Render Interactive AI Coach */}
+          <AICoachCard />
         </div>
 
         {/* Right Column */}

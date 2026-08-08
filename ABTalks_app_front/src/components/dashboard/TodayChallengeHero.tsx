@@ -1,26 +1,38 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight, Code2, Zap } from 'lucide-react';
-
+import { ArrowRight, ChevronLeft, ChevronRight, Code2, Zap, AlertTriangle } from 'lucide-react';
+import { useDemoState } from '../../context/DemoContext';
 export const TodayChallengeHero: React.FC = () => {
   const navigate = useNavigate();
+  const { userData } = useDemoState();
+
+  // Dynamic Day Computation
+  const currentDay = userData.progressDays === 0 ? 1 : userData.progressDays;
 
   return (
-    <div className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 rounded-3xl p-6 md:p-8 text-white relative overflow-hidden shadow-lg">
+    <div className={`rounded-3xl p-6 md:p-8 text-white relative overflow-hidden shadow-lg transition-all duration-300 ${
+      userData.missedDayAlert 
+        ? 'bg-gradient-to-r from-red-600 via-orange-600 to-amber-600' 
+        : 'bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500'
+    }`}>
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
         
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold tracking-wider uppercase bg-white/20 px-3 py-1 rounded-full text-white">
-              TODAY'S TASK
+              {userData.missedDayAlert ? 'STREAK ALERT' : "TODAY'S TASK"}
             </span>
             <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full text-white">
-              Day 12
+              Day {currentDay}
             </span>
           </div>
 
           <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight">
-            Build a REST API with Node.js
+            {userData.progressDays === 0 
+              ? "Welcome! Start Day 1: HTML & CSS Fundamentals" 
+              : userData.missedDayAlert 
+              ? "Complete Today's Task to Recover Your Streak!" 
+              : "Build a REST API with Node.js"}
           </h1>
 
           <div className="flex items-center gap-3 text-xs font-semibold">
@@ -36,10 +48,14 @@ export const TodayChallengeHero: React.FC = () => {
         {/* Action Button & Controls */}
         <div className="flex flex-col items-end gap-4 shrink-0">
           <button
-            onClick={() => navigate('/day/12')}
+            onClick={() => navigate(`/day/${currentDay}`)}
             className="bg-white hover:bg-slate-100 text-orange-600 font-bold px-6 py-3.5 rounded-2xl flex items-center gap-2 shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer text-sm md:text-base"
           >
-            <span>Continue Day 12</span>
+            <span>
+              {userData.progressDays === 0 
+                ? 'Start Day 1' 
+                : `Continue Day ${currentDay}`}
+            </span>
             <ArrowRight className="w-4 h-4" />
           </button>
 
@@ -57,3 +73,5 @@ export const TodayChallengeHero: React.FC = () => {
     </div>
   );
 };
+
+export default TodayChallengeHero;
