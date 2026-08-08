@@ -39,7 +39,7 @@ export const ChallengePage: React.FC = () => {
       <DayTopBar currentDay={currentTask.day} />
 
       {/* Main Content */}
-      <main className="max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 space-y-6">
+      <main className="max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8 space-y-6">
         
         {/* Streak Recovery Alert */}
         {userData.missedDayAlert && (

@@ -22,7 +22,7 @@ const MainContent: React.FC = () => {
       {/* TopBar hidden on both Landing Page and Challenge Pages */}
       {!isLandingPage && !isChallengePage && <TopBar />}
 
-      <main className={`flex-1 ${!isLandingPage ? (isChallengePage ? 'pt-26 pb-24 md:pb-8' : 'pt-1 pb-24 md:pb-8') : ''}`}>
+      <main className={`flex-1 ${!isLandingPage ? (isChallengePage ? 'pt-1 pb-24 md:pb-8' : 'pt-1 pb-24 md:pb-8') : ''}`}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
